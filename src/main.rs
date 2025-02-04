@@ -19,10 +19,10 @@ struct Edge {
 struct GraphEditor {
     nodes: Vec<Node>,
     selected_node: Option<usize>,
-    edge_weight_input: String, // Temporary input for edge weight
-    node_label_input: String,  // Temporary input for node label
-    start_node_input: String,  // Input for start node index
-    end_node_input: String,    // Input for end node index
+    edge_weight_input: String,           // Temporary input for edge weight
+    node_label_input: String,            // Temporary input for node label
+    start_node_input: String,            // Input for start node index
+    end_node_input: String,              // Input for end node index
     solution: Option<(f32, Vec<usize>)>, // Stores the solution (distance, path)
 }
 
@@ -82,7 +82,10 @@ impl GraphEditor {
         let start_node = self.start_node_input.parse::<usize>().ok();
         let end_node = self.end_node_input.parse::<usize>().ok();
         let valid_inputs = start_node.is_some() && end_node.is_some();
-        if ui.add_enabled(valid_inputs, egui::Button::new("Solve")).clicked() {
+        if ui
+            .add_enabled(valid_inputs, egui::Button::new("Solve"))
+            .clicked()
+        {
             if let (Some(start), Some(end)) = (start_node, end_node) {
                 self.solution = self.dijkstra(start, end);
             }
@@ -93,7 +96,7 @@ impl GraphEditor {
             ui.label(format!("Distance: {:.1}", distance));
             ui.label(format!("Path: {:?}", path));
         }
-        
+
         // Edges
         let mut new_edge: Option<(usize, usize, f32)> = None;
         let mut edge_updates: Vec<(usize, usize, f32)> = Vec::new(); // Store edge updates here
@@ -103,7 +106,8 @@ impl GraphEditor {
             for edge in &node.edges {
                 let start = node.pos;
                 let end = self.nodes[edge.target].pos;
-                ui.painter().line_segment([start, end], (2.0, Color32::WHITE));
+                ui.painter()
+                    .line_segment([start, end], (2.0, Color32::WHITE));
 
                 // Draw the weight label at the midpoint of the edge
                 let midpoint = (start + end.to_vec2()) / 2.0; // Fixed: Use .to_vec2() for Pos2
@@ -126,11 +130,7 @@ impl GraphEditor {
 
         // Apply edge updates after the iteration
         for (from, to, weight) in edge_updates {
-            if let Some(edge) = self.nodes[from]
-                .edges
-                .iter_mut()
-                .find(|e| e.target == to)
-            {
+            if let Some(edge) = self.nodes[from].edges.iter_mut().find(|e| e.target == to) {
                 edge.weight = weight;
             }
         }
@@ -175,7 +175,8 @@ impl GraphEditor {
 
             // Highlight the selected node
             if self.selected_node == Some(i) {
-                ui.painter().circle_stroke(node.pos, 15.0, (2.0, Color32::YELLOW));
+                ui.painter()
+                    .circle_stroke(node.pos, 15.0, (2.0, Color32::YELLOW));
             }
 
             // Draw the node label with index in parentheses
@@ -214,14 +215,13 @@ impl GraphEditor {
 
         // Add the new edge
         if let Some((from, to, weight)) = new_edge {
-            self.nodes[from].edges.push(Edge {
-                target: to,
-                weight,
-            });
+            self.nodes[from].edges.push(Edge { target: to, weight });
         }
 
         // Add new node on double-click
-        if ui.input(|i| i.pointer.any_click() && i.pointer.button_double_clicked(PointerButton::Primary)) {
+        if ui.input(|i| {
+            i.pointer.any_click() && i.pointer.button_double_clicked(PointerButton::Primary)
+        }) {
             if let Some(pos) = ui.ctx().pointer_hover_pos() {
                 let label = if self.node_label_input.is_empty() {
                     format!("{}", self.nodes.len()) // Default to next node index
@@ -309,5 +309,4 @@ fn main() {
             Ok(Box::new(graph_editor))
         }),
     );
-
 }
