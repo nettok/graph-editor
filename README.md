@@ -4,7 +4,7 @@ A simple graph editor built in Rust using the `egui` library. This tool allows y
 
 ## Features
 
-- **Create Nodes**: Double-click on the canvas to add nodes.
+- **Create Nodes**: Press `N` to add a node on the mouse pointer position.
 - **Edit Node Labels**: Click on a node's label to update it.
 - **Create Edges**: Select a node, hover over another node, and press `E` to create an edge.
 - **Edit Edge Weights**: Click on an edge's weight label to update it.
@@ -29,7 +29,7 @@ A simple graph editor built in Rust using the `egui` library. This tool allows y
 
 ### Creating and Editing Nodes
 
-- **Add a Node**: Double-click anywhere on the canvas to add a new node.
+- **Add a Node**: Press `N` pointing anywhere on the canvas to add a new node.
 - **Edit Node Label**:
   1. Enter a label in the "Node label" text input field.
   2. Click on the label of a node to update it.

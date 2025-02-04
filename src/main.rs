@@ -218,10 +218,8 @@ impl GraphEditor {
             self.nodes[from].edges.push(Edge { target: to, weight });
         }
 
-        // Add new node on double-click
-        if ui.input(|i| {
-            i.pointer.any_click() && i.pointer.button_double_clicked(PointerButton::Primary)
-        }) {
+        // Add new node with the "N" key over the pointer position
+        if ui.input(|i| i.key_pressed(Key::N)) {
             if let Some(pos) = ui.ctx().pointer_hover_pos() {
                 let label = if self.node_label_input.is_empty() {
                     format!("{}", self.nodes.len()) // Default to next node index
