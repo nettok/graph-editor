@@ -1,0 +1,8 @@
+[package]
+name = "graph-editor"
+version = "0.1.0"
+authors = ["Ernesto Menéndez <pyalec@gmail.com>"]
+edition = "2021"
+
+[dependencies]
+eframe = "0.30.0"
